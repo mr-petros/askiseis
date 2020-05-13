@@ -11,22 +11,41 @@
 </div>
 
 <div class="w3-twothird w3-display-container w3-panel" style="height:100%;">
+
+<!-- error msg -->
+<?php if (!empty($errmsg)): ?>
+<div class="w3-panel w3-pale-yellow w3-modal-content">
+  <h3> Ουπς... προβληματάκι!</h3>
+  <p><?= esc($errmsg)?></p>
+</div>  
+<?php endif ?>
+
+<!-- info msg -->
+<?php if (!empty($infomsg)): ?>
+<div class="w3-panel w3-pale-green w3-modal-content">
+  <h3> Super!</h3>
+  <p><?= esc($infomsg)?></p>
+</div>  
+<?php endif ?>
+
+
 <div class="w3-modal-content w3-display-top authgroup" style="margin-top:100px;max-width:90%" id="outerdiv">
+
 
 <!-- top menu-->
  <div class="w3-bar w3-blue-gray">
   <button class="w3-bar-item w3-button w3-white tabcl" id = "btnloginForm" onclick="openTab('loginForm')">Σύνδεση</button>
-  <button class="w3-bar-item w3-button tabcl" id = "btnsignup1" onclick="openTab('signup1')">Εγγραφή εκπαιδευτικού</button>
-  <button class="w3-bar-item w3-button tabcl" id = "btnsignup2" onclick="openTab('signup2')">Εγγραφή μαθητή</button>
+  <button class="w3-bar-item w3-button tabcl" id = "btnregisterT" onclick="openTab('registerT')">Εγγραφή εκπαιδευτικού</button>
+  <button class="w3-bar-item w3-button tabcl" id = "btnregisterS" onclick="openTab('registerS')">Εγγραφή μαθητή</button>
 </div>
 
 <!-- Φόρμα εισόδου-->
  <form class="w3-container" id="loginForm" action="login" method="post">
  	<div class="w3-center" ><br><i class="fa fa-user w3-text-blue-gray"  style="font-size: 100px;"></i> </div>
       <div class="w3-section">
-      <label><b>όνομα χρήστη</b> <span class="w3-text-red"> <?= $errmsg['login'] ?? "" ?> </span></label>
+      <label><b>όνομα χρήστη</b> </label>
       <input class="w3-input w3-border w3-margin-bottom" type="text" id="username" name = "username" required value ="<?= $username ?? ""?>">
-      <label><b>κωδικός</b> <span class="w3-text-red"> <?= $errmsg['loginpwd'] ?? "" ?> </span></label>
+      <label><b>κωδικός</b></label>
       <input class="w3-input w3-border" type="password" id="pwd" name= "pwd" required value="">
       <button class="w3-btn w3-block w3-green w3-section w3-padding" type="submit">Είσοδος</button>
     <span class="w3-right w3-padding"><a href="#" onclick="openAuth('forgotten')">(ξε)χάσατε τον κωδικό σας;</a></span>
@@ -35,20 +54,21 @@
   </form>
 
 <!-- Φόρμα Εγγραφής εκπαιδευτικού-->
-<form class="w3-container"  id="signup1" style="display:none" action="registerT"  method="post">
+<form class="w3-container"  id="registerT" style="display:none" action="registerT"  method="post">
    <div class="w3-center" ><br><i class="fa fa-user-plus w3-text-blue-gray"  style="font-size: 100px;"></i> </div>
     <div class="w3-section">
-      <label><b>όνομα χρήστη</b> <span class="w3-text-red"> <?= $errmsg['username'] ?? "" ?> </span></label>
+      <label><b>όνομα χρήστη</b> </label>
       <input class="w3-input w3-border w3-margin-bottom" type="text" id="username" name= "username" required value= "<?= $username ?? "" ?>" >
       <label><b>email</b> <span class="w3-text-red"> <?= $errmsg['email'] ?? ""?> </span> </label>
       <input class="w3-input w3-border w3-margin-bottom" type="email" id="email" name ="email" required value= "<?= $email ?? "" ?>" >
       <br><input type="checkbox" name="terms" required> Έχω διαβάσει & συμφωνώ με τους <a href="#" id="terms">όρους χρήσης</a><br>
-      <button class="w3-btn w3-block w3-deep-orange w3-section w3-padding" type="submit">Εγγραφή</button>
+      <div class="w3-text-red w3-right">  </div>
+      <button class="w3-btn w3-block w3-blue w3-section w3-padding" type="submit">Εγγραφή</button>
       </div>
   </form>
 
 <!-- Φόρμα Εγγραφής μαθητή-->
-<form class="w3-container"  id="signup2" style="display:none" action="registerS"  method="post">
+<form class="w3-container"  id="registerS" style="display:none" action="registerS"  method="post">
    <div class="w3-center"><br><i class="fa fa-child w3-text-blue-gray"  style="font-size: 100px;"></i> </div>
     <div class="w3-section">
       <label><b>όνομα χρήστη</b>  <span class="w3-text-red"> <?= $errmsg['student'] ?? "" ?> </span></label>
@@ -63,12 +83,12 @@
 </div>
 
 <!-- Φόρμα ξέχασα τον κωδικό μου-->
-<div class="w3-modal-content w3-display-top authgroup" style="margin-top:100px;max-width:90%;display:none" id="forgotten"  method="post">
+<div class="w3-modal-content w3-display-top authgroup" style="margin-top:100px;max-width:90%;display:none" id="forgotten"  >
  <div class="w3-center"><br><i class="fa fa-unlock w3-text-blue-gray"  style="font-size: 100px;"></i> </div>
- <form class="w3-container" action="resetpwd">
+ <form class="w3-container" action="resetpwd" method="post">
     <div class="w3-section">
       <label><b>email</b></label>
-      <input class="w3-input w3-border w3-margin-bottom" type="email" id="email" required>
+      <input class="w3-input w3-border w3-margin-bottom" type="email" id="email" name="email" required>
       <button class="w3-btn w3-block w3-deep-orange w3-section w3-padding" type="submit">Αποστολή νέου κωδικού</button>
       </div>
   </form>
@@ -108,14 +128,17 @@
         }
 	}
 	function openAuth(c) {
-		$(".authgroup").hide();
-		$("#"+ c).show();
-	}
+        if (!!c) {
+    		$(".authgroup").hide();
+	    	$("#"+ c).show();
+        }
+    }
 	$("#terms").click(function() {
 		openAuth("termsdiv");
     });
     
     openTab('<?= esc($active_tab) ?>');
+    openAuth('<?= esc($active_forgotten) ?>');
  </script>
 
 

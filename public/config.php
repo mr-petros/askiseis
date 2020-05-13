@@ -36,7 +36,7 @@ define("mailFromName", "μικρές βιβλιοθήκες");
 
 define( 'PATH_SYSTEM', '..' );
 define( 'PATH_SRC',    PATH_SYSTEM     );
-define( 'PATH_DATA',   PATH_SYSTEM     );
+define( 'PATH_DATA',   PATH_SYSTEM    );
 define( 'PATH_APP',    PATH_SRC        );
 define( 'PATH_LIB',    PATH_SRC    .  '/lib'     );
 define( 'PATH_CONFIG', PATH_APP    .  '/config'  );

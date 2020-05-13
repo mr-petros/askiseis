@@ -38,25 +38,31 @@ class Model_User extends RedBean_SimpleModel {
 
 		$this->otp_hash = password_hash($newpwd, PASSWORD_DEFAULT);
 		$this->otp_created_at = R::isoDateTime();
-		return mySendMail ($email, $this->username, $newpwd, "oneTimePwd");
+		mySendMail ($email, $this->username, $newpwd, "oneTimePwd");
 		return R::store( $this );
 	}
 	
 	function login($password){
-		if (password_verify ( $password ,$this->pwd_hash )){
+        if (password_verify ( $password ,$this->pwd_hash )){
 			$this->login_at = R::isoDateTime();
 			$this->failed_logins = 0;
 			$this->otp_hash = NULL;
-			$this->otp_created_at = NULL;
+            $this->otp_created_at = NULL;
+            $response = true;
+        }
+        else if (password_verify ( $password ,$this->otp_hash )){
+            $this->login_at = R::isoDateTime();
+            $response = "otp";
 		}
 		else{
 			$this->failed_logins += 1;
 			throw new Exception('Λαθος κωδικός εισόδου.');
 		}
-		return R::store( $this );
-		return true;
+        R::store( $this );
+        
+		
 	}
-	
+     
 	function changePwd($oldpwd, $newpwd, $newpwd2){
 		if ($newpwd !== $newpwd2)
 			throw new Exception('Οι δύο νέοι κωδικοί δεν ταιριάζουν.');

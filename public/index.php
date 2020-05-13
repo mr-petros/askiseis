@@ -22,6 +22,7 @@ R::setup(dbConStr, dbUser, dbPwd);
 
 if (!fmap( [ ], '__do' )) {
 	/* No request handler has been found... */
-	http_response_code(404);
+    http_response_code(404);
+    
 	die('wut?');
 }
